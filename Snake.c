@@ -7,10 +7,13 @@
 #include<conio.h>
 #include<time.h>
 
+#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4996);
+
 #define N 20 //NUMERO DI RIGHE (Altezza del frame)
 #define M 40 //NUMERO DI COLONNE (Base del frame)
 
-/*Dichiarazioni di variabili globali dove*/ 
+/*Dichiarazioni di variabili globali dove*/
 //'i' e 'j' servirano per i vari loop
 //la matrice field sarà il contenitore delle posizioni nel campo di gioco
 //'x' e 'y' saranno le coordinate del nostro serpente
@@ -26,7 +29,7 @@
 //*f sarà il puntatore al file dove sarà contenuto il punteggio massimmo raggiunto
 //speed servirà per modificare la velocita del serpente
 int i, j, field[N][M], x, y, Gy, head, tail, game, food, xFood, yFood, comandoInput, direction = 'd', score, highScore, speed;
-FILE *f;
+FILE* f;
 
 void snakeInitialization(void) {
 	//Questa funzione viene chiamata ogni volta che inizia il gioco, il suo compito è quello di settare tutti i valori default per il nostro serpente
@@ -104,14 +107,14 @@ void resetScreenPosition(void) {
 	HANDLE hOut;	//serve per gestire vari problemi della console del nostro programma
 	COORD postion;	//mantine le post-coordinate sullo schermo della console 
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE); //abbiamo assegnato alla variaviale hOut lo Standard Input del nostro programma per risolvere certi problemi come l'handling
-	postion.X = 0; 
+	postion.X = 0;
 	postion.Y = 0; //Abbiamo assegnato angolo(nel nostro acso a sinistra) più in alto dell'output schermo alle variabili "position"
 	SetConsoleCursorPosition(hOut, postion); //qui abbiamo detto la posizione della console a quella "posizione"
-} 
+}
 
 void randomFood(void) {
 	srand(time(0));		//serve per rendere la posizione del cibo imprevedibile
-	xFood = 1 + rand() % 18;	
+	xFood = 1 + rand() % 18;
 	yFood = 1 + rand() % 38;	//genera un numero a caso e quello sarà la coordinata del cibo e grazie a srand queste coordinate combieranno sempre ad ogni esecuzione
 
 	if (food == 0 && field[xFood][yFood] == 0) {	//questo if serve per controllare se posso stampare il cibo sullo schermo, per farlo si devono verificare due condizioni la prima e che non ci sia altro cibo sullo schermo e la seconda è che se il campo di gioco è vuoto(vuol dire che in quelle coordinate non ce il serpente) alora posso stampare
@@ -169,7 +172,7 @@ void gameOver(void) {		//questa funzione emette un suono e cambia il valore di g
 void movment(void) {
 	comandoInput = getCharacterWithNoBlock();	//prendo il valore ascii del tasto premuto
 	comandoInput = tolower(comandoInput);	//usiamo la funzione tolower in modo da rendere il comando unico e funzionerà anche se l'utente attiva la maiuscola
-	
+
 	if ((comandoInput == 'a' || comandoInput == 'd' || comandoInput == 'w' || comandoInput == 's') && abs(direction - comandoInput) > 5)
 		direction = comandoInput;	//questo serve per far si che il serpente si muova all'infito premendo solo una volta il tasto
 
@@ -187,7 +190,7 @@ void movment(void) {
 		head++;
 		field[x][y] = head;
 	}
-										//facciamo un a serie di controlli in base al tasto premuto il serpente combierà posizione e quindi anche le sue coordinate quindi bisogna aggiornarle
+	//facciamo un a serie di controlli in base al tasto premuto il serpente combierà posizione e quindi anche le sue coordinate quindi bisogna aggiornarle
 	if (direction == 'a') {
 		y--;
 		if (field[x][y] != 0 && field[x][y] != -1)
@@ -253,9 +256,9 @@ void main(void) {
 	while (game == 0) {
 		print();	//stampa tutto quello che ce nel gioco
 		resetScreenPosition();	//Resetta lo screen position portando il cursore all'anglolo più in alto a sinistra, sarà costante farà si trova nello stesso posto senza fermare l'esecuzione
-		randomFood(); //genera le coordinate per il cibo 
-		movment();
-		tailRemove();
-		Sleep(99);
+		randomFood();	//genera le coordinate per il cibo 
+		movment();	//funzione che controlla quale movimento deve effettuare il serpente
+		tailRemove();	//funzione che rimuove la coda in eccesso quando si muove il serpente
+		Sleep(99);	//funzione per fa si che il gioco (principalmente i movimenti del serpente) siano fluidi
 	}
 }
