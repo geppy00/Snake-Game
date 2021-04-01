@@ -1,4 +1,4 @@
-//REPLY SNAKE GAME DEVELOPED IN C
+Ôªø//REPLY SNAKE GAME DEVELOPED IN C
 //DEVELOPER/CODER: Giuseppe Malafronte 
 
 #include<stdio.h>
@@ -15,24 +15,24 @@
 
 /*Dichiarazioni di variabili globali dove*/
 //'i' e 'j' servirano per i vari loop
-//la matrice field sar‡ il contenitore delle posizioni nel campo di gioco
+//la matrice field sar√† il contenitore delle posizioni nel campo di gioco
 //'x' e 'y' saranno le coordinate del nostro serpente
 //la variabile Gy serve per mantenere il valore della coordinata y
-//head e tail saranno le coordinate rispettivamente per la testa e la coda ed ogni volta che la matrice contiene il valore di head quella Ë la testa ed ogni volta che contiene il valore di tail quello sar‡ sempre il serpente, altri valori tra tail e head sar‡ il corpo del serpente quindi possiamo effettivamente ottenere un serpente nel nostro field[][]
-//game Ë una variabile usata per il game loop
-//food Ë una variabile che conterr‡ la coordinata del cibo del serpente
+//head e tail saranno le coordinate rispettivamente per la testa e la coda ed ogni volta che la matrice contiene il valore di head quella √® la testa ed ogni volta che contiene il valore di tail quello sar√† sempre il serpente, altri valori tra tail e head sar√† il corpo del serpente quindi possiamo effettivamente ottenere un serpente nel nostro field[][]
+//game √® una variabile usata per il game loop
+//food √® una variabile che conterr√† la coordinata del cibo del serpente
 //xFood E yFood sono le coordinate della posizione del cibo
-//comandoInput conterr‡ il valore ascii del tasto premuto ed inizializzato a d cosi che gia si muova il serpente
-//direction indica la direzione del serpente ed Ë iniziallizata a d cioe verso destra
-//score Ë un contatore che far‡ visualizzare il punteggio al momento della partita
-//highScore conterr‡ il punteggio massimo
-//*f sar‡ il puntatore al file dove sar‡ contenuto il punteggio massimmo raggiunto
-//speed servir‡ per modificare la velocita del serpente
+//comandoInput conterr√† il valore ascii del tasto premuto ed inizializzato a d cosi che gia si muova il serpente
+//direction indica la direzione del serpente ed √® iniziallizata a d cioe verso destra
+//score √® un contatore che far√† visualizzare il punteggio al momento della partita
+//highScore conterr√† il punteggio massimo
+//*f sar√† il puntatore al file dove sar√† contenuto il punteggio massimmo raggiunto
+//speed servir√† per modificare la velocita del serpente
 int i, j, field[N][M], x, y, Gy, head, tail, game, food, xFood, yFood, comandoInput, direction = 'd', score, highScore, speed;
 FILE* f;
 
 void snakeInitialization(void) {
-	//Questa funzione viene chiamata ogni volta che inizia il gioco, il suo compito Ë quello di settare tutti i valori default per il nostro serpente
+	//Questa funzione viene chiamata ogni volta che inizia il gioco, il suo compito √® quello di settare tutti i valori default per il nostro serpente
 	f = fopen("highScore.txt", "r");
 	if (f == NULL) {
 		printf("ERRORE LETTURA DEL FILE highScore.txt\n\n");
@@ -51,7 +51,7 @@ void snakeInitialization(void) {
 	head = 5;
 	tail = 1;
 	Gy = y;
-	game = 0; //0 significa che il gioco Ë in esecuzione(1 invece vul dire che il gioco Ë terminato)
+	game = 0; //0 significa che il gioco √® in esecuzione(1 invece vul dire che il gioco √® terminato)
 	food = 0;
 	score = 0;
 	speed = 99;
@@ -62,8 +62,18 @@ void snakeInitialization(void) {
 	}
 }
 
+void printTitleGame() {
+	printf("\n");
+	printf("\t\t\t+-+-+-+-+-+");
+	printf("| S | N | A | K | E |");
+	printf("| G | A | M | E | ! |");
+	printf("+-+-+-+-+-+");
+	printf("\n");
+}
+
 void print(void) {
-	//Creazione del frame(area dove il serpente puÚ muoversi) attraverso i caratteri ASCII
+	
+	//Creazione del frame(area dove il serpente pu√≤ muoversi) attraverso i caratteri ASCII
 	for (i = 0; i <= M + 1; i++) {
 		if (i == 0)
 			printf("%c", 201);
@@ -101,6 +111,7 @@ void print(void) {
 		else
 			printf("%c", 205);
 	}
+
 }
 
 void resetScreenPosition(void) {
@@ -108,16 +119,16 @@ void resetScreenPosition(void) {
 	COORD postion;	//mantine le post-coordinate sullo schermo della console 
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE); //abbiamo assegnato alla variaviale hOut lo Standard Input del nostro programma per risolvere certi problemi come l'handling
 	postion.X = 0;
-	postion.Y = 0; //Abbiamo assegnato angolo(nel nostro acso a sinistra) pi˘ in alto dell'output schermo alle variabili "position"
+	postion.Y = 0; //Abbiamo assegnato angolo(nel nostro acso a sinistra) pi√π in alto dell'output schermo alle variabili "position"
 	SetConsoleCursorPosition(hOut, postion); //qui abbiamo detto la posizione della console a quella "posizione"
 }
 
 void randomFood(void) {
 	srand(time(0));		//serve per rendere la posizione del cibo imprevedibile
 	xFood = 1 + rand() % 18;
-	yFood = 1 + rand() % 38;	//genera un numero a caso e quello sar‡ la coordinata del cibo e grazie a srand queste coordinate combieranno sempre ad ogni esecuzione
+	yFood = 1 + rand() % 38;	//genera un numero a caso e quello sar√† la coordinata del cibo e grazie a srand queste coordinate combieranno sempre ad ogni esecuzione
 
-	if (food == 0 && field[xFood][yFood] == 0) {	//questo if serve per controllare se posso stampare il cibo sullo schermo, per farlo si devono verificare due condizioni la prima e che non ci sia altro cibo sullo schermo e la seconda Ë che se il campo di gioco Ë vuoto(vuol dire che in quelle coordinate non ce il serpente) alora posso stampare
+	if (food == 0 && field[xFood][yFood] == 0) {	//questo if serve per controllare se posso stampare il cibo sullo schermo, per farlo si devono verificare due condizioni la prima e che non ci sia altro cibo sullo schermo e la seconda √® che se il campo di gioco √® vuoto(vuol dire che in quelle coordinate non ce il serpente) alora posso stampare
 		field[xFood][yFood] = -1;	//valore speciale ustato nella funzione print per stampare il cibo
 		food = 1;	//serve ad indicare che ce gia un cibo sul campo di gioco
 	}
@@ -127,7 +138,7 @@ void randomFood(void) {
 }
 
 int getCharacterWithNoBlock() {
-	if (_kbhit())	//usiamo la funzione _kbhit che restituisce un valore diverso da zero se Ë stato premuto un tasto se vine premuto un tasto allora restutuisco il suo valore in ascii 
+	if (_kbhit())	//usiamo la funzione _kbhit che restituisce un valore diverso da zero se √® stato premuto un tasto se vine premuto un tasto allora restutuisco il suo valore in ascii 
 		return _getch();
 	else
 		return -1; //se al momento della chiamata non viene premuto nessun tasto allora restituiamo -1 
@@ -135,13 +146,13 @@ int getCharacterWithNoBlock() {
 }
 
 
-void gameOver(void) {		//questa funzione emette un suono e cambia il valore di game ad 1 che vuol dire che il gioco Ë terminato
+void gameOver(void) {		//questa funzione emette un suono e cambia il valore di game ad 1 che vuol dire che il gioco √® terminato
 	printf("\a");
 	Sleep(1500);
 	system("Cls");
 
 	if (score > highScore) {
-		printf("NEW HIGHSCORE %d!!!!!!!!!!!!!!!\n\n", score);
+		printf("!!!!!!!!!!!!!!! NEW HIGHSCORE %d !!!!!!!!!!!!!!!\n\n", score);
 		system("pause");
 		f = fopen("highScore.txt", "w");
 		fprintf(f, "%d", score);
@@ -171,7 +182,7 @@ void gameOver(void) {		//questa funzione emette un suono e cambia il valore di g
 
 void movment(void) {
 	comandoInput = getCharacterWithNoBlock();	//prendo il valore ascii del tasto premuto
-	comandoInput = tolower(comandoInput);	//usiamo la funzione tolower in modo da rendere il comando unico e funzioner‡ anche se l'utente attiva la maiuscola
+	comandoInput = tolower(comandoInput);	//usiamo la funzione tolower in modo da rendere il comando unico e funzioner√† anche se l'utente attiva la maiuscola
 
 	if ((comandoInput == 'a' || comandoInput == 'd' || comandoInput == 'w' || comandoInput == 's') && abs(direction - comandoInput) > 5)
 		direction = comandoInput;	//questo serve per far si che il serpente si muova all'infito premendo solo una volta il tasto
@@ -190,7 +201,7 @@ void movment(void) {
 		head++;
 		field[x][y] = head;
 	}
-	//facciamo un a serie di controlli in base al tasto premuto il serpente combier‡ posizione e quindi anche le sue coordinate quindi bisogna aggiornarle
+	//facciamo un a serie di controlli in base al tasto premuto il serpente combier√† posizione e quindi anche le sue coordinate quindi bisogna aggiornarle
 	if (direction == 'a') {
 		y--;
 		if (field[x][y] != 0 && field[x][y] != -1)
@@ -210,9 +221,9 @@ void movment(void) {
 		x--;
 		if (field[x][y] != 0 && field[x][y] != -1)
 			gameOver();
-		if (x == 0)			//in ogni direzione bisogna controllare se il serpente va in un bordo e dobbiamo spostarlo alla parte opposta altrimenti i valori di x(in caso vada sopra) o y(in caso vada a destra) andranno msotto lo zero valori non contenuti nella matrice field e il gioco crasher‡
+		if (x == 0)			//in ogni direzione bisogna controllare se il serpente va in un bordo e dobbiamo spostarlo alla parte opposta altrimenti i valori di x(in caso vada sopra) o y(in caso vada a destra) andranno msotto lo zero valori non contenuti nella matrice field e il gioco crasher√†
 			x = N - 1;
-		if (field[x][y] == -1) {		//quest if serve ad controllare se il cibo Ë stato mangiato con il valore -1 significa che nel campo di gioco Ë presente il cibo quando il serpente ci va sopra aggiorniamo il valore food a 0 cosi la funzione randomFood generar‡ un altro cibo sulla mappa poi quando mangiamo il cibo allunghiamo il serpende decrementando la coda
+		if (field[x][y] == -1) {		//quest if serve ad controllare se il cibo √® stato mangiato con il valore -1 significa che nel campo di gioco √® presente il cibo quando il serpente ci va sopra aggiorniamo il valore food a 0 cosi la funzione randomFood generar√† un altro cibo sulla mappa poi quando mangiamo il cibo allunghiamo il serpende decrementando la coda
 			food = 0;
 			score += 5;
 			tail -= 2;
@@ -249,16 +260,20 @@ void tailRemove(void) {
 	tail++;
 }
 
-
-
 void main(void) {
 	snakeInitialization();
+	
 	while (game == 0) {
+		printTitleGame();
+		printf("\n");
 		print();	//stampa tutto quello che ce nel gioco
-		resetScreenPosition();	//Resetta lo screen position portando il cursore all'anglolo pi˘ in alto a sinistra, sar‡ costante far‡ si trova nello stesso posto senza fermare l'esecuzione
+		resetScreenPosition();	//Resetta lo screen position portando il cursore all'anglolo pi√π in alto a sinistra, sar√† costante far√† si trova nello stesso posto senza fermare l'esecuzione
 		randomFood();	//genera le coordinate per il cibo 
 		movment();	//funzione che controlla quale movimento deve effettuare il serpente
 		tailRemove();	//funzione che rimuove la coda in eccesso quando si muove il serpente
 		Sleep(99);	//funzione per fa si che il gioco (principalmente i movimenti del serpente) siano fluidi
 	}
+
+	printf("\nGrazie per aver giocato :D\n");
+	printf("CREDITS:\nDeveloper = Giuseppe Malafronte (G E P P Y)\nTester = Giovanni (Crax)\nUn ringraziamento speciale a: Daniil Khalikov e Jeft Faria Mathamba\n\n\n");
 }
