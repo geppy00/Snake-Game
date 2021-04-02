@@ -72,7 +72,8 @@ void printTitleGame() {
 }
 
 void print(void) {
-	
+	printf("    CURRENT SCORE: %d\tHIGHSCORE: %d", score, highScore);
+	printf("\n");
 	//Creazione del frame(area dove il serpente può muoversi) attraverso i caratteri ASCII
 	for (i = 0; i <= M + 1; i++) {
 		if (i == 0)
@@ -83,7 +84,6 @@ void print(void) {
 			printf("%c", 205);
 	}
 
-	printf("CURRENT SCORE: %d		HIGHSCORE: %d", score, highScore);
 	printf("\n");
 
 	//In questo for oltre a disegnare una perte di frame disegniamo anche il serpente, e il cibo in base ai volori contenuti nella matrice
@@ -98,7 +98,7 @@ void print(void) {
 				printf("%c", 178);
 			if (field[i][j] == -1)
 				printf("%c", 15);
-			if (j == M - 1)
+			if (j == M - 1) 
 				printf("%c\n", 186);
 		}
 	}
@@ -160,8 +160,8 @@ void gameOver(void) {		//questa funzione emette un suono e cambia il valore di g
 	}
 
 	system("Cls");
-	printf("\t\t\n\nGAME OVER!!!!!!!!!!!!!!!!!\n\n");
-	printf("\t\tSCORE: %d\n\n", score);
+	printf("\n\n\t\t\t\t!!!!!!!!!!!!!!!!! GAME OVER !!!!!!!!!!!!!!!!!\n\n");
+	printf("Punteggio totalizzato => SCORE: %d\n\n", score);
 
 	printf("Premi invio per giocare di nuovo\nOppure ESC per uscire\n\n");
 	while (1) {
@@ -260,6 +260,13 @@ void tailRemove(void) {
 	tail++;
 }
 
+void endTitle() {
+	printf("\n\t\t\t\t*****************SNAKE C VERSION*****************\n");
+	printf("\nGrazie per aver giocato :D\n");
+	printf("\n\tCREDITS:\n\n\t\tDeveloper = Giuseppe Malafronte (G E P P Y)\n\t\tTester = Giovanni (Crax)\n\n\t\tUn ringraziamento speciale a: Daniil Khalikov e Jeft Faria Mathamba\n\n\n");
+	system("pause");
+}
+
 void main(void) {
 	snakeInitialization();
 	
@@ -267,6 +274,8 @@ void main(void) {
 		printTitleGame();
 		printf("\n");
 		print();	//stampa tutto quello che ce nel gioco
+		printf("\n");
+		printTitleGame();
 		resetScreenPosition();	//Resetta lo screen position portando il cursore all'anglolo più in alto a sinistra, sarà costante farà si trova nello stesso posto senza fermare l'esecuzione
 		randomFood();	//genera le coordinate per il cibo 
 		movment();	//funzione che controlla quale movimento deve effettuare il serpente
@@ -274,6 +283,5 @@ void main(void) {
 		Sleep(99);	//funzione per fa si che il gioco (principalmente i movimenti del serpente) siano fluidi
 	}
 
-	printf("\nGrazie per aver giocato :D\n");
-	printf("CREDITS:\nDeveloper = Giuseppe Malafronte (G E P P Y)\nTester = Giovanni (Crax)\nUn ringraziamento speciale a: Daniil Khalikov e Jeft Faria Mathamba\n\n\n");
+	endTitle();
 }
