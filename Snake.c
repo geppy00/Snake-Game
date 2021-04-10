@@ -14,25 +14,26 @@
 #define M 40 //NUMERO DI COLONNE (Base del frame)
 
 /*Dichiarazioni di variabili globali dove*/
-//'i' e 'j' servirano per i vari loop
-//la matrice field sarà il contenitore delle posizioni nel campo di gioco
-//'x' e 'y' saranno le coordinate del nostro serpente
-//la variabile Gy serve per mantenere il valore della coordinata y
-//head e tail saranno le coordinate rispettivamente per la testa e la coda ed ogni volta che la matrice contiene il valore di head quella è la testa ed ogni volta che contiene il valore di tail quello sarà sempre il serpente, altri valori tra tail e head sarà il corpo del serpente quindi possiamo effettivamente ottenere un serpente nel nostro field[][]
-//game è una variabile usata per il game loop
-//food è una variabile che conterrà la coordinata del cibo del serpente
-//xFood E yFood sono le coordinate della posizione del cibo
-//comandoInput conterrà il valore ascii del tasto premuto ed inizializzato a d cosi che gia si muova il serpente
-//direction indica la direzione del serpente ed è iniziallizata a d cioe verso destra
-//score è un contatore che farà visualizzare il punteggio al momento della partita
-//highScore conterrà il punteggio massimo
-//*f sarà il puntatore al file dove sarà contenuto il punteggio massimmo raggiunto
-//speed servirà per modificare la velocita del serpente
-int i, j, field[N][M], x, y, Gy, head, tail, game, food, xFood, yFood, comandoInput, direction = 'd', score, highScore, speed;
-FILE* f;
+int i;	//'i' e 'j' servirano per i vari loop
+int j; 
+int field[N][M];	//la matrice field sarà il contenitore delle posizioni nel campo di gioco
+int x;	//'x' e 'y' saranno le coordinate del nostro serpente
+int y;
+int Gy;		//la variabile Gy serve per mantenere il valore della coordinata y
+int head;	//head e tail saranno le coordinate rispettivamente per la testa e la coda ed ogni volta che la matrice contiene il valore di head quella è la testa ed ogni volta che contiene il valore di tail quello sarà sempre il serpente, altri valori tra tail e head sarà il corpo del serpente quindi possiamo effettivamente ottenere un serpente nel nostro field[][]
+int tail; 
+int game;	//game è una variabile usata per il game loop 
+int food;	//food è una variabile che conterrà la coordinata del cibo del serpente
+int xFood;	//xFood E yFood sono le coordinate della posizione del cibo
+int yFood; 
+int comandoInput;	//comandoInput conterrà il valore ascii del tasto premuto ed inizializzato a d cosi che gia si muova il serpente
+int direction;	//direction indica la direzione del serpente ed è iniziallizata a d cioe verso destra 
+int score;	//score è un contatore che farà visualizzare il punteggio al momento della partita 
+int highScore;	//highScore conterrà il punteggio massimo 
+int speed;	//speed servirà per modificare la velocita del serpente
+FILE* f;	//*f sarà il puntatore al file dove sarà contenuto il punteggio massimmo raggiunto
 
-void snakeInitialization(void) {
-	//Questa funzione viene chiamata ogni volta che inizia il gioco, il suo compito è quello di settare tutti i valori default per il nostro serpente
+void snakeInitialization(void) {	//Questa funzione viene chiamata ogni volta che inizia il gioco, il suo compito è quello di settare tutti i valori default per il nostro serpente
 	f = fopen("highScore.txt", "r");
 	if (f == NULL) {
 		printf("ERRORE LETTURA DEL FILE highScore.txt\n\n");
@@ -55,6 +56,7 @@ void snakeInitialization(void) {
 	food = 0;
 	score = 0;
 	speed = 99;
+	direction = 'd';
 
 	for (i = 0; i < head; i++) {
 		Gy++;
@@ -138,8 +140,8 @@ void randomFood(void) {
 }
 
 int getCharacterWithNoBlock() {
-	if (_kbhit())	//usiamo la funzione _kbhit che restituisce un valore diverso da zero se è stato premuto un tasto se vine premuto un tasto allora restutuisco il suo valore in ascii 
-		return _getch();
+	if (_kbhit())	//_kbhit restituisce un valore diverso da zero se è stato premuto un tasto. In caso contrario, viene restituito 0.
+		return _getch_nolock();	//usiamo _getch_nolock perchè non effettuando controlli sull'thread risulta più veloce a prendere il tasto premuto 
 	else
 		return -1; //se al momento della chiamata non viene premuto nessun tasto allora restituiamo -1 
 
@@ -184,7 +186,7 @@ void movment(void) {
 	comandoInput = getCharacterWithNoBlock();	//prendo il valore ascii del tasto premuto
 	comandoInput = tolower(comandoInput);	//usiamo la funzione tolower in modo da rendere il comando unico e funzionerà anche se l'utente attiva la maiuscola
 
-	if ((comandoInput == 'a' || comandoInput == 'd' || comandoInput == 'w' || comandoInput == 's') && abs(direction - comandoInput) > 5)
+	if ((comandoInput == 'a' || comandoInput == 'd' || comandoInput == 'w' || comandoInput == 's' || comandoInput == 27) && abs(direction - comandoInput) > 5)
 		direction = comandoInput;	//questo serve per far si che il serpente si muova all'infito premendo solo una volta il tasto
 
 	if (direction == 'd') {
@@ -246,6 +248,10 @@ void movment(void) {
 		head++;
 		field[x][y] = head;
 	}
+
+	if (direction == 27) 
+		gameOver();
+	
 }
 
 
@@ -267,10 +273,12 @@ void endTitle() {
 	system("pause");
 }
 
+
 void main(void) {
 	snakeInitialization();
 	
 	while (game == 0) {
+		
 		printTitleGame();
 		printf("\n");
 		print();	//stampa tutto quello che ce nel gioco
