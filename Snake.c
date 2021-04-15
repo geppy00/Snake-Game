@@ -11,7 +11,7 @@
 #pragma warning(disable:4996);
 
 #define N 20 //NUMERO DI RIGHE (Altezza del frame)
-#define M 40 //NUMERO DI COLONNE (Base del frame)
+#define M 110 //NUMERO DI COLONNE (Base del frame)
 
 /*Dichiarazioni di variabili globali dove*/
 int i;	//'i' e 'j' servirano per i vari loop
@@ -238,7 +238,7 @@ void movment(void) {
 		x++;
 		if (field[x][y] != 0 && field[x][y] != -1)  //Quest if controlla se il serpente vada su se stesso e le condizioni sono due se non si trova in uno spazio vuoto e se non si strova in uno spazio dove ce il cibo, quindi se si verificano tutte e due allora sta su se stesso e ci chiamiamo la funzione game over per terminare il gioco
 			gameOver();
-		if (x == N - 1)
+		if (x == N)
 			x = 0;
 		if (field[x][y] == -1) {
 			food = 0;
@@ -273,8 +273,50 @@ void endTitle() {
 	system("pause");
 }
 
+void menu() {
+	printf("\nSELEZIONARE UN TASTO NUMERICO DEL MENU' PER ESEGUIRE UNA DETERMINATA OPERAZIONE\n");
+	puts("\t\tWELCOME TO SNAKE ");
+	puts("\t\tPRESS 1 TO START PLAY THE GAME");
+	puts("\t\tPRESS 2 TO RESERT HIGHSCORE");
+	puts("\t\tPRESS 0 TO EXIT");
+}
+
+void menuScelta() {
+	int scelta;
+	
+	do {
+		menu();
+		scanf("%d", &scelta);
+
+		switch (scelta) {
+			case 1:
+				return;
+				break;
+
+			case 2:
+				fflush(stdin);
+				f = fopen("highScore.txt", "w");
+				fprintf(f, "0");
+				return;
+				break;
+
+			case 0:
+				system("cls");
+				endTitle();
+				exit(0);
+				break;
+
+			default:
+				system("cls");
+				puts("IL COMANDO NON E' PRESENTE NEL MENU'");
+				puts("PER FAVORE SELEZIONARE UN COMANDO PRESENTE NEL MENU'");
+		}
+	} while (scelta != 0);
+}
 
 void main(void) {
+	menuScelta();
+	system("cls");
 	snakeInitialization();
 	
 	while (game == 0) {
