@@ -1,14 +1,15 @@
 ﻿//REPLY SNAKE GAME DEVELOPED IN C
 //DEVELOPER/CODER: Giuseppe Malafronte 
 
+#include <conio.h>
+#include <ctype.h>
 #include<stdio.h>
 #include<Windows.h>
 #include<stdlib.h>
-#include<conio.h>
 #include<time.h>
 
 #define _CRT_SECURE_NO_WARNINGS
-#pragma warning(disable:4996);
+#pragma warning(disable:4996)
 
 #define N 20 //NUMERO DI RIGHE (Altezza del frame)
 #define M 110 //NUMERO DI COLONNE (Base del frame)
@@ -31,6 +32,7 @@ int direction;	//direction indica la direzione del serpente ed è iniziallizata 
 int score;	//score è un contatore che farà visualizzare il punteggio al momento della partita 
 int highScore;	//highScore conterrà il punteggio massimo 
 int speed;	//speed servirà per modificare la velocita del serpente
+int difficolta;
 FILE* f;	//*f sarà il puntatore al file dove sarà contenuto il punteggio massimmo raggiunto
 
 void snakeInitialization(void) {	//Questa funzione viene chiamata ogni volta che inizia il gioco, il suo compito è quello di settare tutti i valori default per il nostro serpente
@@ -139,9 +141,9 @@ void randomFood(void) {
 		speed -= 5;
 }
 
-int getCharacterWithNoBlock() {
+int getCharacterWithNoBlock(void) {
 	if (_kbhit())	//_kbhit restituisce un valore diverso da zero se è stato premuto un tasto. In caso contrario, viene restituito 0.
-		return _getch_nolock();	//usiamo _getch_nolock perchè non effettuando controlli sull'thread risulta più veloce a prendere il tasto premuto 
+		return _getch();	//La funzione _getch legge un singolo carattere dalla console senza echeggiare il carattere
 	else
 		return -1; //se al momento della chiamata non viene premuto nessun tasto allora restituiamo -1 
 
@@ -281,8 +283,29 @@ void menu() {
 	puts("\t\tPRESS 0 TO EXIT");
 }
 
+int controlloSceltaDifficolta() {
+	int sceltaDif;
+	
+	do {
+		printf("\nSCEGLI LA DIFFICOLTA'\n");
+		puts("\t\t1 FACILE");
+		puts("\t\t2 NORMALE");
+		puts("\t\t3 DIFFICILE");
+		fflush(stdin);
+		scanf("%d", &sceltaDif);
+
+		if(sceltaDif == 1 || sceltaDif == 2 || sceltaDif == 3)
+			return sceltaDif;
+		else {
+			system("cls");
+			printf("\n!!\tSCEGLI UN OPZIONE PRESENTE NEL MENU'\t!!\n");
+		}
+	}while(sceltaDif < 1 || sceltaDif > 3);
+}
+
 void menuScelta() {
 	int scelta;
+	int sceltaDifficolta;
 	
 	do {
 		menu();
@@ -290,6 +313,17 @@ void menuScelta() {
 
 		switch (scelta) {
 			case 1:
+				system("cls");
+
+				sceltaDifficolta = controlloSceltaDifficolta();
+				
+				if(sceltaDifficolta == 1)
+					difficolta = 99;
+				if(sceltaDifficolta == 2)
+					difficolta = 33;
+				if(sceltaDifficolta == 3)
+					difficolta = 0;
+
 				return;
 				break;
 
@@ -308,8 +342,8 @@ void menuScelta() {
 
 			default:
 				system("cls");
-				puts("IL COMANDO NON E' PRESENTE NEL MENU'");
-				puts("PER FAVORE SELEZIONARE UN COMANDO PRESENTE NEL MENU'");
+				puts("\n\t\t\t\t!! IL COMANDO NON E' PRESENTE NEL MENU' !!");
+				puts("\n\t\t\t\tPER FAVORE SELEZIONARE UN COMANDO PRESENTE NEL MENU'\n\n");
 		}
 	} while (scelta != 0);
 }
@@ -320,7 +354,6 @@ void main(void) {
 	snakeInitialization();
 	
 	while (game == 0) {
-		
 		printTitleGame();
 		printf("\n");
 		print();	//stampa tutto quello che ce nel gioco
@@ -330,7 +363,7 @@ void main(void) {
 		randomFood();	//genera le coordinate per il cibo 
 		movment();	//funzione che controlla quale movimento deve effettuare il serpente
 		tailRemove();	//funzione che rimuove la coda in eccesso quando si muove il serpente
-		Sleep(99);	//funzione per fa si che il gioco (principalmente i movimenti del serpente) siano fluidi
+		Sleep(difficolta);	//funzione per fa si che il gioco (principalmente i movimenti del serpente) siano fluidi
 	}
 
 	endTitle();
