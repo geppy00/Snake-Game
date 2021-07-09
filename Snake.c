@@ -1,12 +1,18 @@
 ﻿//REPLY SNAKE GAME DEVELOPED IN C
-//DEVELOPER/CODER: Giuseppe Malafronte 
+//DEVELOPER/CODER: Giuseppe Malafronte
 
+//PER ESEGUIRE IL PROGRAMMA CON IL COMPILATORE gcc O g++ BISOGNA IMPORTARE IL LINKER MANUALMENTE CON IL COMANDO -l SCRIVENDO NELLA SHELL -lWinmm
+
+#include<windows.h>
+#include<mmsystem.h>
 #include <conio.h>
 #include <ctype.h>
 #include<stdio.h>
 #include<Windows.h>
 #include<stdlib.h>
 #include<time.h>
+
+#pragma comment(lib, "Winmm.lib")
 
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
@@ -276,21 +282,25 @@ void endTitle() {
 }
 
 void menu() {
+	printf("\n======================================================================================================================\n\n");
 	printf("\nSELEZIONARE UN TASTO NUMERICO DEL MENU' PER ESEGUIRE UNA DETERMINATA OPERAZIONE\n");
 	puts("\t\tWELCOME TO SNAKE ");
 	puts("\t\tPRESS 1 TO START PLAY THE GAME");
 	puts("\t\tPRESS 2 TO RESERT HIGHSCORE");
 	puts("\t\tPRESS 0 TO EXIT");
+	printf("\n\n====================================================================================================================\n");
 }
 
 int controlloSceltaDifficolta() {
 	int sceltaDif;
 	
 	do {
+		printf("\n======================================================================================================================\n\n");
 		printf("\nSCEGLI LA DIFFICOLTA'\n");
 		puts("\t\t1 FACILE");
 		puts("\t\t2 NORMALE");
 		puts("\t\t3 DIFFICILE");
+		printf("\n\n====================================================================================================================\n");
 		fflush(stdin);
 		scanf("%d", &sceltaDif);
 
@@ -331,6 +341,17 @@ void menuScelta() {
 				fflush(stdin);
 				f = fopen("highScore.txt", "w");
 				fprintf(f, "0");
+
+				system("cls");
+				sceltaDifficolta = controlloSceltaDifficolta();
+				
+				if(sceltaDifficolta == 1)
+					difficolta = 99;
+				if(sceltaDifficolta == 2)
+					difficolta = 33;
+				if(sceltaDifficolta == 3)
+					difficolta = 0;
+
 				return;
 				break;
 
@@ -352,8 +373,10 @@ void main(void) {
 	menuScelta();
 	system("cls");
 	snakeInitialization();
-	
+	PlaySoundA((LPCSTR) "C:\\Users\\peppe\\Desktop\\ALL MY SHIT\\Progetti in C\\(games) SNAKE\\track.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (game == 0) {
+		//PlaySound (TEXT ("track.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+
 		printTitleGame();
 		printf("\n");
 		print();	//stampa tutto quello che ce nel gioco
