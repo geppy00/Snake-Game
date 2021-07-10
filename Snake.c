@@ -157,10 +157,11 @@ int getCharacterWithNoBlock(void) {
 
 
 void gameOver(void) {		//questa funzione emette un suono e cambia il valore di game ad 1 che vuol dire che il gioco è terminato
+	PlaySound(NULL, 0, 0);	// interrompe la riproduzione di un suono riprodotto in modo asincronoa
 	printf("\a");
 	Sleep(1500);
 	system("Cls");
-
+	
 	if (score > highScore) {
 		printf("!!!!!!!!!!!!!!! NEW HIGHSCORE %d !!!!!!!!!!!!!!!\n\n", score);
 		system("pause");
@@ -179,6 +180,7 @@ void gameOver(void) {		//questa funzione emette un suono e cambia il valore di g
 		if (comandoInput == 13) {
 			game = 0;
 			snakeInitialization();
+			PlaySoundA((LPCSTR) "C:\\Users\\peppe\\Desktop\\ALL MY SHIT\\Progetti in C\\(games) SNAKE\\track.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 			break;
 		}
 		else if (comandoInput == 27) {
@@ -373,10 +375,9 @@ void main(void) {
 	menuScelta();
 	system("cls");
 	snakeInitialization();
-	PlaySoundA((LPCSTR) "C:\\Users\\peppe\\Desktop\\ALL MY SHIT\\Progetti in C\\(games) SNAKE\\track.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
-	while (game == 0) {
-		//PlaySound (TEXT ("track.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	PlaySoundA((LPCSTR) "C:\\Users\\peppe\\Desktop\\ALL MY SHIT\\Progetti in C\\(games) SNAKE\\track.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);	//riproduce un file audio ed utilizza un identificatore per l'evento di sistema (LPCSTR)
 
+	while (game == 0) {
 		printTitleGame();
 		printf("\n");
 		print();	//stampa tutto quello che ce nel gioco
