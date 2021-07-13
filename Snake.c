@@ -157,8 +157,8 @@ int getCharacterWithNoBlock(void) {
 
 
 void gameOver(void) {		//questa funzione emette un suono e cambia il valore di game ad 1 che vuol dire che il gioco è terminato
-	PlaySound(NULL, 0, 0);	// interrompe la riproduzione di un suono riprodotto in modo asincronoa
-	printf("\a");
+	PlaySoundA((LPCSTR) "C:\\Users\\peppe\\Desktop\\ALL MY SHIT\\Progetti in C\\(games) SNAKE\\Mario_Death.wav", NULL, SND_FILENAME | SND_ASYNC);	// interrompe la riproduzione della traccia di gioco
+	//printf("\a");
 	Sleep(1500);
 	system("Cls");
 	
@@ -304,11 +304,13 @@ int controlloSceltaDifficolta() {
 		puts("\t\t3 DIFFICILE");
 		printf("\n\n====================================================================================================================\n");
 		fflush(stdin);
-		scanf("%d", &sceltaDif);
 
-		if(sceltaDif == 1 || sceltaDif == 2 || sceltaDif == 3)
+		if(scanf("%d", &sceltaDif) > 0 && (sceltaDif == 1 || sceltaDif == 2 || sceltaDif == 3)) {
+			PlaySoundA((LPCSTR) "C:\\Users\\peppe\\Desktop\\ALL MY SHIT\\Progetti in C\\(games) SNAKE\\Select_Menu.wav", NULL, SND_FILENAME | SND_ASYNC);
 			return sceltaDif;
+		}
 		else {
+			PlaySoundA((LPCSTR) "C:\\Users\\peppe\\Desktop\\ALL MY SHIT\\Progetti in C\\(games) SNAKE\\Nope.wav", NULL, SND_FILENAME | SND_ASYNC);
 			system("cls");
 			printf("\n!!\tSCEGLI UN OPZIONE PRESENTE NEL MENU'\t!!\n");
 		}
@@ -321,7 +323,8 @@ void menuScelta() {
 	
 	do {
 		menu();
-		scanf("%d", &scelta);
+		if(scanf("%d", &scelta) > 0 && (scelta == 1 || scelta == 2 || scelta == 0))
+			PlaySoundA((LPCSTR) "C:\\Users\\peppe\\Desktop\\ALL MY SHIT\\Progetti in C\\(games) SNAKE\\Select_Menu.wav", NULL, SND_FILENAME | SND_ASYNC);
 
 		switch (scelta) {
 			case 1:
@@ -337,7 +340,7 @@ void menuScelta() {
 					difficolta = 0;
 
 				return;
-				break;
+			break;
 
 			case 2:
 				fflush(stdin);
@@ -355,15 +358,17 @@ void menuScelta() {
 					difficolta = 0;
 
 				return;
-				break;
+			break;
 
 			case 0:
 				system("cls");
 				endTitle();
+				system("color 0F");
 				exit(0);
 				break;
 
 			default:
+				PlaySoundA((LPCSTR) "C:\\Users\\peppe\\Desktop\\ALL MY SHIT\\Progetti in C\\(games) SNAKE\\Nope.wav", NULL, SND_FILENAME | SND_ASYNC);
 				system("cls");
 				puts("\n\t\t\t\t!! IL COMANDO NON E' PRESENTE NEL MENU' !!");
 				puts("\n\t\t\t\tPER FAVORE SELEZIONARE UN COMANDO PRESENTE NEL MENU'\n\n");
@@ -372,6 +377,8 @@ void menuScelta() {
 }
 
 void main(void) {
+	system("cls");
+	system("color 6E");
 	menuScelta();
 	system("cls");
 	snakeInitialization();
@@ -391,4 +398,5 @@ void main(void) {
 	}
 
 	endTitle();
+	system("color 0F");
 }
